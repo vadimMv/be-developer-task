@@ -1,0 +1,24 @@
+{
+  "name": "mini-twitter",
+  "version": "1.0.0",
+  "description": "A simplified Twitter-like system in TypeScript",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "test": "ts-node tests/example.ts",
+    "clean": "rm -rf dist"
+  },
+  "keywords": [
+    "twitter",
+    "social-network",
+    "typescript"
+  ],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "typescript": "^5.0.0",
+    "ts-node": "^10.9.0"
+  }
+}
