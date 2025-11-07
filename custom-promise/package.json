@@ -1,0 +1,22 @@
+{
+  "name": "custom-promise",
+  "version": "1.0.0",
+  "description": "A from-scratch implementation of Promises in TypeScript",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "test": "node tests/example.js"
+  },
+  "keywords": [
+    "promise",
+    "async",
+    "typescript",
+    "custom-implementation"
+  ],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "typescript": "^5.0.0"
+  }
+}
