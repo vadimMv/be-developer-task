@@ -1,0 +1,23 @@
+{
+  "name": "custom-redux",
+  "version": "1.0.0",
+  "description": "A from-scratch implementation of Redux state management in TypeScript",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "test": "npm run build && ts-node tests/example.ts"
+  },
+  "keywords": [
+    "redux",
+    "state-management",
+    "typescript",
+    "custom-implementation",
+    "flux"
+  ],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "typescript": "^5.0.0"
+  }
+}
