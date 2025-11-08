@@ -1,0 +1,1 @@
+{"version":3,"file":"combineReducers.d.ts","sourceRoot":"","sources":["../src/combineReducers.ts"],"names":[],"mappings":"AAAA,OAAO,EAAE,MAAM,EAAE,OAAO,EAAE,iBAAiB,EAAE,MAAM,SAAS,CAAC;AAE7D;;;;GAIG;AACH,wBAAgB,eAAe,CAAC,CAAC,EAAE,CAAC,SAAS,MAAM,GAAG,MAAM,EAC1D,QAAQ,EAAE,iBAAiB,CAAC,CAAC,EAAE,CAAC,CAAC,GAChC,OAAO,CAAC,CAAC,EAAE,CAAC,CAAC,CAuCf"}
