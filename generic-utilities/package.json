@@ -1,0 +1,33 @@
+{
+  "name": "generic-utilities",
+  "version": "1.0.0",
+  "description": "A collection of type-safe generic TypeScript utilities",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "test": "ts-node tests/example.ts",
+    "clean": "rm -rf dist"
+  },
+  "keywords": [
+    "typescript",
+    "generics",
+    "utilities",
+    "type-safe",
+    "cache",
+    "event-emitter",
+    "query-builder",
+    "state-machine",
+    "repository",
+    "pipeline",
+    "validation",
+    "memoization"
+  ],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "typescript": "^5.0.0",
+    "ts-node": "^10.9.0",
+    "@types/node": "^20.0.0"
+  }
+}
