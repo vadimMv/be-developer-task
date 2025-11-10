@@ -125,7 +125,7 @@ class Subscriber<T> implements Observer<T> {
 /**
  * SubscriberFunction type - the function passed to Observable constructor
  */
-type SubscriberFunction<T> = (subscriber: Subscriber<T>) => void | (() => void);
+type SubscriberFunction<T> = (subscriber: Subscriber<T>) => void | (() => void) | Subscription;
 
 /**
  * Observable class - represents a stream of values over time

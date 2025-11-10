@@ -12,16 +12,12 @@ import {
   takeWhile,
   skip,
   skipWhile,
-  debounceTime,
-  throttleTime,
   mergeMap,
   switchMap,
   catchError,
-  retry,
   distinctUntilChanged,
   scan,
   reduce,
-  delay,
   first,
   last
 } from '../src';
@@ -29,57 +25,57 @@ import {
 console.log('=== Custom Observable Examples ===\n');
 
 // Example 1: Basic Observable Creation
-console.log('1. Basic Observable Creation:');
-const basic$ = new Observable<number>(subscriber => {
-  subscriber.next(1);
-  subscriber.next(2);
-  subscriber.next(3);
-  subscriber.complete();
-});
+// console.log('1. Basic Observable Creation:');
+// const basic$ = new Observable<number>(subscriber => {
+//   subscriber.next(1);
+//   subscriber.next(2);
+//   subscriber.next(3);
+//   subscriber.complete();
+// });
 
-basic$.subscribe({
-  next: value => console.log(`  Value: ${value}`),
-  complete: () => console.log('  Completed!\n')
-});
+// basic$.subscribe({
+//   next: value => console.log(`  Value: ${value}`),
+//   complete: () => console.log('  Completed!\n')
+// });
 
-// Example 2: Observable.of
-console.log('2. Observable.of - Create from values:');
-Observable.of(10, 20, 30, 40, 50).subscribe({
-  next: value => console.log(`  Value: ${value}`),
-  complete: () => console.log('  Completed!\n')
-});
+// // Example 2: Observable.of
+// console.log('2. Observable.of - Create from values:');
+// Observable.of(10, 20, 30, 40, 50).subscribe({
+//   next: value => console.log(`  Value: ${value}`),
+//   complete: () => console.log('  Completed!\n')
+// });
 
-// Example 3: Observable.from (Array)
-console.log('3. Observable.from - Create from array:');
-Observable.from([100, 200, 300]).subscribe({
-  next: value => console.log(`  Value: ${value}`),
-  complete: () => console.log('  Completed!\n')
-});
+// // Example 3: Observable.from (Array)
+// console.log('3. Observable.from - Create from array:');
+// Observable.from([100, 200, 300]).subscribe({
+//   next: value => console.log(`  Value: ${value}`),
+//   complete: () => console.log('  Completed!\n')
+// });
 
-// Example 4: Observable.range
-console.log('4. Observable.range - Sequence of numbers:');
-Observable.range(1, 5).subscribe({
-  next: value => console.log(`  Value: ${value}`),
-  complete: () => console.log('  Completed!\n')
-});
+// // Example 4: Observable.range
+// console.log('4. Observable.range - Sequence of numbers:');
+// Observable.range(1, 5).subscribe({
+//   next: value => console.log(`  Value: ${value}`),
+//   complete: () => console.log('  Completed!\n')
+// });
 
 // Example 5: map operator
-console.log('5. map - Transform values:');
-Observable.of(1, 2, 3, 4, 5)
-  .pipe(map(x => x * 10))
-  .subscribe({
-    next: value => console.log(`  Value: ${value}`),
-    complete: () => console.log('  Completed!\n')
-  });
+// console.log('5. map - Transform values:');
+// Observable.of(1, 2, 3, 4, 5)
+//   .pipe(map(x => x * 10))
+//   .subscribe({
+//     next: value => console.log(`  Value: ${value}`),
+//     complete: () => console.log('  Completed!\n')
+//   });
 
-// Example 6: filter operator
-console.log('6. filter - Filter even numbers:');
-Observable.of(1, 2, 3, 4, 5, 6, 7, 8, 9, 10)
-  .pipe(filter(x => x % 2 === 0))
-  .subscribe({
-    next: value => console.log(`  Value: ${value}`),
-    complete: () => console.log('  Completed!\n')
-  });
+// // Example 6: filter operator
+// console.log('6. filter - Filter even numbers:');
+// Observable.of(1, 2, 3, 4, 5, 6, 7, 8, 9, 10)
+//   .pipe(filter(x => x % 2 === 0))
+//   .subscribe({
+//     next: value => console.log(`  Value: ${value}`),
+//     complete: () => console.log('  Completed!\n')
+//   });
 
 // Example 7: Chaining operators
 console.log('7. Chaining operators (filter + map):');
@@ -239,7 +235,7 @@ Observable.from(users)
     filter(user => user.age >= 30),
     map(user => ({ ...user, senior: true })),
     take(2),
-    scan((acc, user) => acc + 1, 0)
+    scan((acc, _user) => acc + 1, 0)
   )
   .subscribe({
     next: count => console.log(`  Processed count: ${count}`),
@@ -248,7 +244,7 @@ Observable.from(users)
 
 // Example 21: Interval with operators
 console.log('21. Interval - First 5 values with delay:');
-const intervalSub = Observable.interval(100)
+Observable.interval(100)
   .pipe(
     take(5),
     map(x => x * 2)

@@ -6,7 +6,7 @@
   "types": "dist/index.d.ts",
   "scripts": {
     "build": "tsc",
-    "test": "node tests/example.js"
+    "test": "ts-node tests/example.ts"
   },
   "keywords": [
     "promise",
@@ -17,6 +17,8 @@
   "author": "",
   "license": "MIT",
   "devDependencies": {
-    "typescript": "^5.0.0"
+    "@types/node": "^20.0.0",
+    "typescript": "^5.0.0",
+    "ts-node": "^10.9.0"
   }
 }
