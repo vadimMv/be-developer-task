@@ -4,6 +4,7 @@ A comprehensive, thread-safe collection of Go utilities converted from TypeScrip
 - **Promise Pattern** - JavaScript-style promises with goroutines
 - **Mini Twitter** - Social media simulation with thread-safe operations
 - **Generic Utilities** - Reusable patterns and data structures
+- **Rate Limiters** - Production-ready rate limiting algorithms
 
 ## Features
 
@@ -92,6 +93,156 @@ if result.Success {
 }
 ```
 
+### 🚦 Rate Limiters
+
+Five production-ready rate limiting algorithms, each with different characteristics:
+
+#### Token Bucket
+Allows bursts up to capacity, refills at constant rate:
+```go
+// 10 requests/second with burst of 20
+limiter := ratelimiter.NewTokenBucket(10.0, 20)
+if limiter.Allow() {
+    // Process request
+}
+```
+
+**Characteristics:**
+- ✅ Allows traffic bursts
+- ✅ Simple and memory efficient
+- ✅ Good for APIs with bursty traffic
+- ⚠️ Can temporarily overwhelm downstream systems
+
+**Use Cases:** API rate limiting, network traffic shaping, web services with burst allowance
+
+#### Leaky Bucket
+Enforces smooth, constant output rate:
+```go
+// 5 requests/second, queue capacity of 10
+limiter := ratelimiter.NewLeakyBucket(5.0, 10)
+if limiter.Allow() {
+    // Request added to queue
+}
+```
+
+**Characteristics:**
+- ✅ Perfectly smooth output rate
+- ✅ Prevents bursts
+- ✅ Queue-based design
+- ⚠️ No burst allowance (stricter)
+
+**Use Cases:** Network packet scheduling, video streaming, strict rate enforcement
+
+#### Fixed Window Counter
+Simple counter reset at fixed intervals:
+```go
+// 100 requests per minute
+limiter := ratelimiter.NewFixedWindow(100, 1*time.Minute)
+if limiter.Allow() {
+    // Process request
+}
+```
+
+**Characteristics:**
+- ✅ Very simple implementation
+- ✅ Memory efficient (single counter)
+- ✅ High performance
+- ⚠️ Boundary problem (2x rate at window edges)
+
+**Use Cases:** Simple analytics, approximate rate limiting, high-throughput systems
+
+#### Sliding Window Log
+Maintains precise log of all requests:
+```go
+// 50 requests per 10 seconds
+limiter := ratelimiter.NewSlidingWindowLog(50, 10*time.Second)
+if limiter.Allow() {
+    // Process request
+}
+```
+
+**Characteristics:**
+- ✅ Most accurate algorithm
+- ✅ No boundary problem
+- ✅ Precise tracking
+- ⚠️ High memory usage (stores all timestamps)
+- ⚠️ O(n) time complexity
+
+**Use Cases:** Low/medium traffic APIs, critical accuracy requirements, short time windows
+
+#### Sliding Window Counter
+Hybrid approach with weighted calculation:
+```go
+// 1000 requests per minute
+limiter := ratelimiter.NewSlidingWindowCounter(1000, 1*time.Minute)
+if limiter.Allow() {
+    // Process request
+}
+```
+
+**Characteristics:**
+- ✅ Excellent accuracy
+- ✅ O(1) time complexity
+- ✅ Memory efficient (two counters)
+- ✅ No boundary problem
+- ✅ Production-ready (used by CloudFlare, etc.)
+
+**Use Cases:** High-traffic APIs, production systems, best general-purpose choice
+
+#### Comparison Table
+
+| Algorithm | Accuracy | Memory | Performance | Burst Support | Boundary Safe |
+|-----------|----------|--------|-------------|---------------|---------------|
+| Token Bucket | Good | O(1) | Excellent | ✅ Yes | ✅ Yes |
+| Leaky Bucket | Good | O(1) | Excellent | ❌ No | ✅ Yes |
+| Fixed Window | Fair | O(1) | Excellent | ❌ No | ❌ No |
+| Sliding Log | Excellent | O(n) | Good | ❌ No | ✅ Yes |
+| Sliding Counter | Very Good | O(1) | Excellent | ❌ No | ✅ Yes |
+
+**Recommendation:** Use **Sliding Window Counter** for most production scenarios - it provides the best balance of accuracy, performance, and memory efficiency.
+
+#### Advanced Features
+
+All rate limiters support:
+
+**Wait Operations** - Block until request can be allowed:
+```go
+limiter.Wait()  // Blocks until 1 request can proceed
+limiter.WaitN(5) // Blocks until 5 requests can proceed
+```
+
+**Reservations** - Check wait time without blocking:
+```go
+waitTime := limiter.Reserve(3)
+if waitTime == 0 {
+    // Can proceed immediately
+} else {
+    // Need to wait 'waitTime' duration
+}
+```
+
+**Metrics** - Query current state:
+```go
+// Token Bucket
+tokens := limiter.AvailableTokens()
+
+// Leaky Bucket
+queueSize := limiter.QueueSize()
+capacity := limiter.AvailableCapacity()
+
+// Fixed Window
+remaining := limiter.RemainingRequests()
+
+// Sliding Window Log
+count := limiter.RequestCount()
+oldest := limiter.OldestRequest()
+
+// Sliding Window Counter
+estimated := limiter.EstimatedCount()
+prevCount := limiter.PreviousWindowCount()
+currCount := limiter.CurrentWindowCount()
+```
+
 ## Thread Safety
 
 All utilities are designed with concurrency in mind:
@@ -101,6 +252,7 @@ All utilities are designed with concurrency in mind:
 - ✅ **Repository** - Thread-safe CRUD operations
 - ✅ **Mini Twitter** - All user and tweet operations protected
 - ✅ **Memoization** - Concurrent function calls safely cached
+- ✅ **Rate Limiters** - All algorithms use Mutex for thread-safe operations
 
 ## Installation
 
@@ -189,6 +341,9 @@ go run examples/minitwitter_example.go
 
 # Generic utilities examples
 go run examples/genericutils_example.go
+
+# Rate limiter examples
+go run examples/ratelimiter_example.go
 ```
 
 ## Project Structure
@@ -210,10 +365,17 @@ golang-utilities/
 │   ├── pipeline.go
 │   ├── repository.go
 │   └── validator.go
+├── rate-limiter/         # Rate limiting algorithms
+│   ├── token_bucket.go
+│   ├── leaky_bucket.go
+│   ├── fixed_window.go
+│   ├── sliding_window_log.go
+│   └── sliding_window_counter.go
 ├── examples/             # Example programs
 │   ├── promise_example.go
 │   ├── minitwitter_example.go
-│   └── genericutils_example.go
+│   ├── genericutils_example.go
+│   └── ratelimiter_example.go
 └── README.md
 ```
 
