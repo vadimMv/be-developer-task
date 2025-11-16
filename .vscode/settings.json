@@ -1,0 +1,84 @@
+{
+  // Go Language Settings
+  "go.useLanguageServer": true,
+  "go.lintOnSave": "workspace",
+  "go.formatTool": "gofmt",
+  "go.autocompleteUnimportedPackages": true,
+  "go.gocodeAutoBuild": true,
+
+  // Debugging Settings
+  "go.delveConfig": {
+    "dlvLoadConfig": {
+      "followPointers": true,
+      "maxVariableRecurse": 3,
+      "maxStringLen": 120,
+      "maxArrayValues": 64,
+      "maxStructFields": -1
+    },
+    "apiVersion": 2,
+    "showGlobalVariables": true,
+    "showLog": true
+  },
+
+  // Code Lens (inline function references)
+  "go.enableCodeLens": {
+    "references": true,
+    "runtest": true
+  },
+
+  // Inlay Hints (inline type information)
+  "go.inlayHints.assignVariableTypes": true,
+  "go.inlayHints.compositeLiteralFields": true,
+  "go.inlayHints.compositeLiteralTypes": true,
+  "go.inlayHints.constantValues": true,
+  "go.inlayHints.functionTypeParameters": true,
+  "go.inlayHints.parameterNames": true,
+  "go.inlayHints.rangeVariableTypes": true,
+
+  // Test Settings
+  "go.testFlags": ["-v", "-race"],
+  "go.testOnSave": false,
+  "go.coverOnSave": false,
+
+  // Build Settings
+  "go.buildOnSave": "off",
+  "go.buildFlags": [],
+  "go.installDependenciesWhenBuilding": true,
+
+  // Editor Settings for Go
+  "[go]": {
+    "editor.formatOnSave": true,
+    "editor.codeActionsOnSave": {
+      "source.organizeImports": "explicit"
+    },
+    "editor.suggest.snippetsPreventQuickSuggestions": false,
+    "editor.tabSize": 4,
+    "editor.insertSpaces": false
+  },
+
+  // Gopls (Go Language Server) Settings
+  "gopls": {
+    "ui.semanticTokens": true,
+    "ui.completion.usePlaceholders": true,
+    "ui.diagnostic.analyses": {
+      "composites": false,
+      "unusedparams": true,
+      "unusedwrite": true,
+      "useany": true
+    },
+    "formatting.gofumpt": false
+  },
+
+  // File Associations
+  "files.associations": {
+    "*.go": "go"
+  },
+
+  // Exclude from file watcher (performance)
+  "files.watcherExclude": {
+    "**/.git/objects/**": true,
+    "**/.git/subtree-cache/**": true,
+    "**/node_modules/**": true,
+    "**/vendor/**": true
+  }
+}
