@@ -1,4 +1,11 @@
 import React, { useState } from 'react';
+import { BrowserRouter, Routes, Route, Navigate, Link, useLocation } from 'react-router-dom';
+import { AuthProvider } from './contexts/AuthContext';
+import { Login } from './components/Login';
+import { Callback } from './components/Callback';
+import { Dashboard } from './components/Dashboard';
+import { Logout } from './components/Logout';
+import { ProtectedRoute } from './components/ProtectedRoute';
 import { TextFieldExample } from './examples/TextFieldExample';
 import { VirtualListExample } from './examples/VirtualListExample';
 import { ErrorBoundaryExample } from './examples/ErrorBoundaryExample';
@@ -35,9 +42,11 @@ const examples: Example[] = [
   { key: 'websocket', title: '8. WebSocket with Auto-Reconnect', component: WebSocketExample },
 ];
 
-function App() {
+/**
+ * Examples Page Component (Protected)
+ */
+const ExamplesPage: React.FC = () => {
   const [selectedExample, setSelectedExample] = useState<ExampleKey>('textfield');
-
   const CurrentExample = examples.find((ex) => ex.key === selectedExample)?.component;
 
   return (
@@ -106,6 +115,24 @@ function App() {
             components, hooks, context optimization, and more.
           </p>
         </div>
+
+        <div style={{ marginTop: '1rem' }}>
+          <Link
+            to="/dashboard"
+            style={{
+              display: 'block',
+              padding: '0.75rem 1rem',
+              backgroundColor: '#374151',
+              color: 'white',
+              textDecoration: 'none',
+              borderRadius: '0.375rem',
+              textAlign: 'center',
+              fontSize: '0.9rem',
+            }}
+          >
+            ← Back to Dashboard
+          </Link>
+        </div>
       </nav>
 
       {/* Main content */}
@@ -119,6 +146,48 @@ function App() {
         {CurrentExample && <CurrentExample />}
       </main>
     </div>
+  );
+};
+
+/**
+ * Main App Component with Routing
+ */
+function App() {
+  return (
+    <BrowserRouter>
+      <AuthProvider>
+        <Routes>
+          {/* Public Routes */}
+          <Route path="/login" element={<Login />} />
+          <Route path="/auth/callback" element={<Callback />} />
+          <Route path="/logout" element={<Logout />} />
+
+          {/* Protected Routes */}
+          <Route
+            path="/dashboard"
+            element={
+              <ProtectedRoute>
+                <Dashboard />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/examples"
+            element={
+              <ProtectedRoute>
+                <ExamplesPage />
+              </ProtectedRoute>
+            }
+          />
+
+          {/* Default redirect */}
+          <Route path="/" element={<Navigate to="/dashboard" replace />} />
+
+          {/* 404 - Redirect to login */}
+          <Route path="*" element={<Navigate to="/login" replace />} />
+        </Routes>
+      </AuthProvider>
+    </BrowserRouter>
   );
 }
 
