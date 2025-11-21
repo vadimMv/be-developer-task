@@ -9,12 +9,18 @@
     "preview": "vite preview",
     "type-check": "tsc --noEmit"
   },
-  "keywords": ["react", "typescript", "patterns"],
+  "keywords": [
+    "react",
+    "typescript",
+    "patterns"
+  ],
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "jwt-decode": "^4.0.0",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "react-router-dom": "^7.9.6"
   },
   "devDependencies": {
     "@types/react": "^18.2.0",
