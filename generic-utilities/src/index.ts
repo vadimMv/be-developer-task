@@ -21,6 +21,9 @@ export { Repository, Entity, InMemoryRepository } from './Repository';
 // Pipeline
 export { Pipeline, ConditionalPipeline } from './Pipeline';
 
+// Data Pipeline (config-driven data transformation)
+export { DataPipeline, PipelineConfig, TransformStep, Operator, DataRecord } from './DataPipeline';
+
 // Validation
 export {
     ValidationResult,
