@@ -11,6 +11,8 @@ import {
     InMemoryRepository,
     Entity,
     Pipeline,
+    DataPipeline,
+    PipelineConfig,
     string,
     number,
     array,
@@ -203,5 +205,59 @@ const memoizedComplex = memoize(complexKeyFunction, (obj) => JSON.stringify(obj)
 
 console.log('Complex 1:', memoizedComplex({ id: 1, data: 'test' }));
 console.log('Complex 2:', memoizedComplex({ id: 1, data: 'test' })); // Cached
+
+// ============================================================================
+// 9. DataPipeline Example
+// ============================================================================
+console.log('\n=== DataPipeline Example ===');
+
+const people = [
+    { name: "Alice", age: 32, city: "Berlin" },
+    { name: "Bob",   age: 25, city: "Paris"  },
+    { name: "Carol", age: 28, city: "Berlin" },
+    { name: "Dan",   age: 19, city: "London" },
+];
+
+const pipelineConfig: PipelineConfig = {
+    steps: [
+        { type: "filter", field: "age", operator: "gt", value: 20 },
+        { type: "sort",   field: "age", direction: "asc" },
+        { type: "map",    from: "name", to: "fullName" },
+        { type: "limit",  count: 2 },
+    ],
+};
+
+const pipelineResult = new DataPipeline(pipelineConfig).run(people);
+console.log('DataPipeline result:', pipelineResult);
+// Expected:
+// [ { fullName: 'Bob', age: 25, city: 'Paris' },
+//   { fullName: 'Carol', age: 28, city: 'Berlin' } ]
+
+// Verify original data is untouched
+console.log('Original data unchanged:', people[0].name === 'Alice'); // true
+
+// Filter with "contains"
+const cityFilter: PipelineConfig = {
+    steps: [{ type: "filter", field: "city", operator: "contains", value: "er" }],
+};
+console.log('Contains "er":', new DataPipeline(cityFilter).run(people).map(r => r.city));
+// [ 'Berlin', 'Berlin' ]
+
+// Empty input
+console.log('Empty input:', new DataPipeline(pipelineConfig).run([])); // []
+
+// Unknown step throws
+try {
+    new DataPipeline({ steps: [{ type: "unknown" } as never] }).run(people);
+} catch (e) {
+    console.log('Unknown step error:', (e as Error).message); // Unknown step: unknown
+}
+
+// Unknown operator throws
+try {
+    new DataPipeline({ steps: [{ type: "filter", field: "age", operator: "neq" as never, value: 0 }] }).run(people);
+} catch (e) {
+    console.log('Unknown operator error:', (e as Error).message); // Unknown operator: neq
+}
 
 console.log('\n=== All Examples Complete ===');
